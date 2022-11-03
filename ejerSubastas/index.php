@@ -1,5 +1,6 @@
-<?php
+<?php       //ESTA PAGINA LA HICE AL PRINCIPIO, CUANDO NO TENIA EL FICHERO DE FUNCIONES CREADO X ESO SE VE TAN FEA.
     require('cabecera.php');
+    include 'funciones.php';    //Se lo pongo ahora para una funcicion.
     echo "<h1>Items disponibles</h1>";
     if (isset($_GET['id'])) {
         $id = $_GET['id'];
@@ -47,7 +48,19 @@
                 //SI TODO DEVUELVE ALGO SIGNIFICA QUE QUEREMOS MOSTRAR LA IMAGEN.
                 if ($imagen != null) {
                     echo "<td> <img src='imagenes/".$imagen['IMAGEN'].".jpg' width = '150'></td>";
-                    echo "<td><a href='itemdetalles.php?id=$item_id'>".$fila['nombre']."</a></td>";
+                    
+                    // APARTADO PARA EL BOTON EDITAR
+                    if(isset($_SESSION['usuario']) == true) {
+                        $idUser = $_SESSION['id'];   
+                        $todoBn = esSuyo($idUser, $item_id);
+                        if ($todoBn == true) {
+                            echo "<td><a href='itemdetalles.php?id=$item_id'>".$fila['nombre']."</a><a href='editaritem.php?id=$item_id'> [EDITAR] </a></td>";
+                        }
+                    }else {
+                        echo "<td><a href='itemdetalles.php?id=$item_id'>".$fila['nombre']."</a></td>";
+                    }
+
+
                     if ($pujas != null && $pujas['COUNT(*)'] != 0) {
                         echo "<td>".$pujas['COUNT(*)']."</td>";
                         echo "<td>".$precioMax['MAX(CANTIDAD)']."€</td>";
@@ -58,7 +71,17 @@
                     echo "<td>".$fecha['FECHAFIN']."</td>";
                 }else {
                     echo "<td>NO IMAGEN</td>";
-                    echo "<td><a href='itemdetalles.php?id=$item_id'>".$fila['nombre']."</a></td>";
+
+                    // APARTADO PARA EL BOTON EDITAR
+                    if(isset($_SESSION['usuario']) == true) {
+                        $idUser = $_SESSION['id'];   
+                        $todoBn = esSuyo($idUser, $item_id);
+                        if ($todoBn == true) {
+                            echo "<td><a href='itemdetalles.php?id=$item_id'>".$fila['nombre']."</a><a href='editaritem.php?id=$item_id'> [EDITAR] </a></td>";
+                        }
+                    }else {
+                        echo "<td><a href='itemdetalles.php?id=$item_id'>".$fila['nombre']."</a></td>";
+                    }
                     if ($pujas != null && $pujas['COUNT(*)'] != 0) {
                         echo "<td>".$pujas['COUNT(*)']."</td>";
                         echo "<td>".$precioMax['MAX(CANTIDAD)']."€</td>";

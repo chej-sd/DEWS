@@ -30,7 +30,7 @@ function pos1h($id){        ///ME SALE MAL, HAY QUE MIRAR PK
     if (($resp = mysqli_query($con, $consultaItem)) === false) {
         die(mysqli_error($con));
     }else {
-        echo "<script>console.log('No se pudo ejecutar la consulta de posponer 1h.');</script>";
+        echo "<script>console.log('Todo perfe, se le sumo 1h.');</script>";
         return true;
     }
 }
@@ -43,7 +43,7 @@ function pos1d($id){        //ESTA IGUAL SALE MAL HAY QUE VER XK
     if (($resp = mysqli_query($con, $consultaItem)) === false) {
         die(mysqli_error($con));
     }else {
-        echo "<script>console.log('No se pudo ejecutar la consulta de posponer 1d.');</script>";
+        echo "<script>console.log('Todo perfe, se le sumo 1d.');</script>";
         return true;
     }
 }
@@ -112,9 +112,38 @@ function insertarPuja($id_item, $id_user, $precio) {
     $consultaPujas = "INSERT INTO PUJAS VALUES ('$idPuja', '$id_item', '$id_user', '$precio', '$fechaActual')";
     if (($resp = mysqli_query($con, $consultaPujas)) === false) {
         die(mysqli_error($con));
-        return false;
     }else {
         echo "<script>console.log('La puja ha sido insertada.');</script>";
+        return true;
+    }
+}
+function esSuyo($id_user,$id_item) {
+    GLOBAL $con; 
+    $consulta = "SELECT * FROM ITEMS WHERE ID = $id_item AND ID_USER = '$id_user'";
+    if (($resp = mysqli_query($con, $consulta)) === false) {
+        die(mysqli_error($con));
+    }else {
+        return true;
+    }
+}
+function eliminaImg($nomImg) {
+    GLOBAL $con; 
+    $consulta = "DELETE FROM IMAGENES WHERE IMAGEN='$nomImg'";
+    if (mysqli_query($con, $consulta)) {
+        return true;
+    }else {
+        return false;
+    }
+}
+function subirImgBBDD ($nom,$id_item) {
+    GLOBAL $con; 
+    $sacoMaxId = sacarMaxIdImg();
+    $sacoMaxId ++;
+    $consultaImg = "INSERT INTO IMAGENES VALUES ('$sacoMaxId', '$id_item', '$nom')";
+    if (($resp = mysqli_query($con, $consultaImg)) === false) {
+        echo "<script>console.log('No se pudo insertar la imagen.');</script>";
+        return false;
+    }else {
         return true;
     }
 }

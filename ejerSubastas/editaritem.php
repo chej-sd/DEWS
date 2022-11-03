@@ -49,7 +49,7 @@ if (isset($_POST['submitPos1d'])) {
         <tr>
             <td><strong>Precio de salida: </strong> <?php echo $precioPartida; ?>€</td> 
             <td>
-                <input type="number" name="restSum">
+                <input type="number" name="restSum" required>
                 <input type="submit" name="submitBajar" value="BAJAR">
                 <input type="submit" name="submitSubir" value="SUBIR">
             </td>
@@ -68,11 +68,6 @@ if (isset($_POST['submitPos1d'])) {
 ?>
 <h1>Imagenes actuales</h1>
 <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" enctype="multipart/form-data">  
-<?php 
-$numImgs = obtenerContImg($id);
-if ($numImgs == 0) {
-    echo "<p>No hay imágenes del item.</p>";
-    ?>
     <table>
         <tr>
             <td>Imagen a subir</td>
@@ -84,50 +79,43 @@ if ($numImgs == 0) {
         </tr>
     </table>
 </form>
-<?php
+<?php 
+$numImgs = obtenerContImg($id);
+if ($numImgs == 0) {
+    echo "<p>No hay imágenes del item.</p>";
 }else {
     $arrImgs = obtenerArrImg($id);
+    echo "<table>";
     foreach ($arrImgs as $imagen) {
         if ($imagen != null) {
-            echo "<td><img src='./$imagen' width = '250' height='250'> </td> ";
-            echo "<td><a>[BORRAR]</a></td> ";
+            echo "<tr>";
+            echo "<td><img src='./$imagen' width = '250' height='250'></td>";
+            echo "<td><a href='eliminaImg.php?img=$imagen&idItem=$id'>[BORRAR]</a></td> ";
+            echo "</tr>";
         }
     }
+    echo "</table>";
 }
 
 //SUBIMOS LA IMGEN
 if (isset($_POST['subir'])) {
     //Recogemos el archivo enviado por el formulario
-    $archivo = $_FILES['archivo']['name'];
-    //Si el archivo contiene algo y es diferente de vacio
-    if (isset($archivo) && $archivo != "") {
-       //Datos sobre el fichero
-       $tipo = $_FILES['archivo']['type'];
-       $tamano = $_FILES['archivo']['size'];
-       $temp = $_FILES['archivo']['tmp_name'];
-       //Se comprueba si el archivo a cargar es correcto observando su extensión y tamaño
-      if (!(strpos($tipo, "jpg") && ($tamano < 2000000))) {
-         echo '<div><b>Error. La extensión o el tamaño de los archivos no es correcta.<br/>
-         - Se permiten archivos .gif, .jpg, .png. y de 200 kb como máximo.</b></div>';
-      }
-      /**else {
-         //Si la imagen es correcta en tamaño y tipo
-         //Se intenta subir al servidor
-         if (move_uploaded_file($temp, 'images/'.$archivo)) {
-             //Cambiamos los permisos del archivo a 777 para poder modificarlo posteriormente
-             chmod('images/'.$archivo, 0777);
-             //Mostramos el mensaje de que se ha subido co éxito
-             echo '<div><b>Se ha subido correctamente la imagen.</b></div>';
-             //Mostramos la imagen subida
-             echo '<p><img src="images/'.$archivo.'"></p>';
-         }
-         else {
-            //Si no se ha podido subir la imagen, mostramos un mensaje de error
-            echo '<div><b>Ocurrió algún error al subir el fichero. No pudo guardarse.</b></div>';
-         }
-       }*/
+    $imagen = $_FILES['archivo']['name'];
+    $ruta = "./imagenes/" . $_FILES['archivo']['name']; 
+    $resultado = @move_uploaded_file($_FILES["archivo"]["tmp_name"], $ruta);
+    if($resultado)
+    {
+        $imagen = explode(".", $imagen);
+        $imagen = $imagen[0];
+        $todoBn = subirImgBBDD($imagen,$id);
+        if ($todoBn != null) {
+            header('Location: editaritem.php?'.$id);    //Refresco la pagina para ver la imagen.
+        }else {
+            echo "<p style='color:red;'>error en sql</p>";
+        }
+
     }
- }
+}
 ?>
 
 

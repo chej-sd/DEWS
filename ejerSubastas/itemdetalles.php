@@ -43,7 +43,7 @@ if (!isset($_SESSION['usuario'])) {
         echo "<tr>";
             echo "<td> <input type='number' name='puja' required> </td>";
             echo "<td> <input type='submit' name='submitPuja' value='¡Puja!''></td>";
-            $user = $_SESSION['id']; //SACO EL USER DE NUEVO POR SI NO ESTABA REGISTRADO, EL METODO USA EL ID DE UN ARTICULO PARA PILLAR EL ID DEL USUARIO Y DE AHÍ PILLAR EL NAME
+            //SACO EL USER DE NUEVO POR SI NO ESTABA REGISTRADO, EL METODO USA EL ID DE UN ARTICULO PARA PILLAR EL ID DEL USUARIO Y DE AHÍ PILLAR EL NAME
             $idUser = $_SESSION['id'];
             $id_item = $id;
             $pujasDiaUser = obtenerTotalPujasUserAlDia($idUser, $id_item);
