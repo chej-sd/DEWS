@@ -15,6 +15,16 @@ class biblio_model extends CI_Model {
         $prestamos = $result->result_array();
         return $prestamos;
     }
+    /**    public function getLibrosDelMismoGenero($gen) {
+        $result = $this->db->query("SELECT TITULO FROM LIBROS WHERE GENERO = '$gen'");
+        $titulos = $result->result_array();
+        return $titulos;
+    }
+    public function getNomAutorTitulo($titulo) {
+        $result = $this->db->query("SELECT NOMBRE FROM AUTORES,LIBROS WHERE LIBROS.TITULO = '$titulo' AND LIBROS.IDAUTOR = AUTORES.IDAUTOR");
+        $autores = $result->result_array();
+        return $autores;
+    }*/
     
 }
 ?>

@@ -24,6 +24,17 @@ class CHome extends CI_Controller {
 		$this->load->model('biblio_model','BM',true);
 		$datos = $this->BM->getCategorias();
 		$this->load->view('cabecera',array('datos'=>$datos));
+		/**
+		$titulos = $this->getLibrosDelMismoGenero($gen);
+		$arrTitulosAutores = [];
+		foreach($titulos as $titulo) {
+			$nomAutor = $this->BM->getNomAutorTitulo($titulo);
+			foreach($nomAutor as $nombre) {
+				array_push($arrTitulosAutores,$titulo."/".$nombre);
+			}
+			
+		}
+		$this->load->view('main',array('tituloAutor'=>$arrTitulosAutores));*/
 		$this->load->view('footer');
 	}
 }

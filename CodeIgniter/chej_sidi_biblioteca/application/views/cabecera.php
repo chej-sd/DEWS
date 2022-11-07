@@ -1,11 +1,12 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
+$hoja_estilos = base_url()."./estilos/style.css";
 ?><!DOCTYPE html>
 <html lang="en">
 <head>
 	<meta charset="utf-8">
 	<title>BIBLIOTECA MAR ANGOSTO</title>
-	<link rel="stylesheet" href="./estilos/style.css">
+	<link rel="stylesheet" href="<?=$hoja_estilos?>">
 </head>
 <body>
 	<div id="header">
@@ -14,11 +15,17 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	<div id="container">
         <div id="bar">
             <ul>
-				<?php 
-					foreach ($datos as $categoria){
-						echo "<li><a href='#'>".$categoria['GENERO']."</a></li>";
-					}
-				?>
+				<?php  foreach ($datos as $categoria){?>
+					<?php $gen = $categoria['GENERO'];?>
+						<li>
+							<a href="<?=base_url()?>index.php/CHome/index/<?=$gen?>"><?=$gen?></a>
+						</li>
+				<?php } ?>
+				
 			</ul>
         </div>
         <div id="main">
+			<!--<p>abro div principal</p>-->
+			<?php
+				
+			?>
