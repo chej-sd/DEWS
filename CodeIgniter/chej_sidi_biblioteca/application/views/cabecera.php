@@ -18,7 +18,7 @@ $hoja_estilos = base_url()."./estilos/style.css";
 				<?php  foreach ($datos as $categoria){?>
 					<?php $gen = $categoria['GENERO'];?>
 						<li>
-							<a href="<?=base_url()?>index.php/CHome/index/<?=$gen?>"><?=$gen?></a>
+							<a href="<?=base_url()?>index.php/CHome/tabla/<?=$gen?>"><?=$gen?></a>
 						</li>
 				<?php } ?>
 				
