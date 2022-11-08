@@ -29,7 +29,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 | 7. Models
 |
 */
-
 /*
 | -------------------------------------------------------------------
 |  Auto-load Packages
@@ -58,7 +57,7 @@ $autoload['packages'] = array();
 |
 |	$autoload['libraries'] = array('user_agent' => 'ua');
 */
-$autoload['libraries'] = array('database'); //PONGO ESTO PARA QUE ME CARGUE LA BBDD AUTOMATICAMENTE.
+$autoload['libraries'] = array('database', 'session'); //PONGO ESTO PARA QUE ME CARGUE LA BBDD AUTOMATICAMENTE.
 
 /*
 | -------------------------------------------------------------------

@@ -17,13 +17,22 @@ class biblio_model extends CI_Model {
         return $prestamos;
     }
     public function getNomAutorTitulo($genero) {
-        $result = $this->db->query("SELECT autores.nombre, libros.titulo
+        $result = $this->db->query("SELECT autores.nombre, libros.titulo, libros.idlibro
                                     FROM AUTORES,LIBROS 
                                     WHERE LIBROS.genero = '$genero' 
                                     AND LIBROS.IDAUTOR = AUTORES.IDAUTOR");
         $autoresTitulos = $result->result_array();
         return $autoresTitulos;
     }
+    public function insertarPrestamo() {
+        $result = $this->db->query("SELECT MAX('IDPRESTAMO') FROM PRESTAMOS");
+        $idMax = $result->result_array() + 1;
+        $result = $this->db->query("INSERT INTO PRESTAMOS VALUES ('$idMax', to_char(sysdate, 'yyyy-mm-dd'), '$idLibro')");
+        $autoresTitulos = $result->result_array();
+        return $autoresTitulos;
+    }
+    
+
     
 }
 ?>
