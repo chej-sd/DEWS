@@ -24,12 +24,31 @@ class biblio_model extends CI_Model {
         $autoresTitulos = $result->result_array();
         return $autoresTitulos;
     }
-    public function insertarPrestamo() {
-        $result = $this->db->query("SELECT MAX('IDPRESTAMO') FROM PRESTAMOS");
-        $idMax = $result->result_array() + 1;
-        $result = $this->db->query("INSERT INTO PRESTAMOS VALUES ('$idMax', to_char(sysdate, 'yyyy-mm-dd'), '$idLibro')");
-        $autoresTitulos = $result->result_array();
-        return $autoresTitulos;
+    public function getCantidadDeLibroEnPrestamos($idLibro) {
+        $result = $this->db->query("SELECT * FROM PRESTAMOS WHERE IDLIBRO = '$idLibro'");
+        return $result->num_rows();
+    }
+    public function sacarTituloLibroPorId($id) {
+        $result = $this->db->query("SELECT TITULO FROM LIBROS WHERE IDLIBRO = $id"); 
+        $inf = $result->result_array(); 
+
+        //Se selecciona el elemento 0 pk siempre devuelve un registro :)
+        return $inf[0];
+    }
+    public function getLibrosNoPresados() {
+        $result = $this->db->query("SELECT TITULO 
+                                    FROM LIBROS, PRESTAMOS 
+                                    WHERE LIBROS.IDLIBRO != PRESTAMOS.IDLIBRO");
+        $librosNoPrestados = $result->result_array();
+        return $librosNoPrestados;
+    }
+    public function insertarPrestamo($idLibro) { 
+        $this->db->query("INSERT INTO PRESTAMOS (fecha,idlibro) VALUES ('".date('Y-m-d')."', '$idLibro')"); 
+    }
+    public function sacarPrestamosAlDiaConsulta($dia) {
+        $fecha = date('Y-m-'.$dia);
+        $result = $this->db->query("SELECT TITULO FROM PRESTAMOS,LIBROS WHERE PRESTAMOS.idlibro = LIBROS.IDLIBRO AND PRESTAMOS.fecha = '".$fecha."'");
+        return $result->result_array();
     }
     
 

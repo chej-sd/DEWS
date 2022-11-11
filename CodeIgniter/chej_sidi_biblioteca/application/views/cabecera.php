@@ -11,7 +11,12 @@ $hoja_estilos = base_url()."./estilos/style.css";
 <body>
 	<div id="header">
 		<h1>PRESTAMOS</h1>
-	</div>
+		<div class="calendario">
+			<p>
+				<a href="<?=base_url()?>index.php/CHome/generarCalendario/">CALENDARIO</a>
+			</p>
+		</div>
+	</div> 
 	<div id="container">
         <div id="bar">
             <ul>
