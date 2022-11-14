@@ -101,8 +101,83 @@ class CHome extends CI_Controller {
 		$this->load->view('librosPrestados', $data); 
 	}  
 	//footer
+	$this->load->view('footer'); 
+	}
+	// ERRORES: HAY QUE DARLE AL BOTON DE "VER PRESTAMOS" CUANDO ESTAS EN LOADPRESMOSLIBRO PARA VER LOS PRESTAMOS Y QUE EN EL SELECT NO APARECE EL LIBRO ELEGIDO SIEMPRE APARECE EL MISMO LIBRO Y CUANDO GRABAS LAS DEVULUCIONES SIEMPRE SE QUEDAN POR LO DEMAS TODO OKEY.
+	public function generarPrestamos(){
+	//Modelos
+	$this->load->model('biblio_model','BM',true);
+	//cabecera
+	$datos = $this->BM->getCategorias();
+	$data['datos']=$datos;
+	$this->load->view('cabecera',$data);
+	//Lista + btn
+	$data['librosTitulo'] = $this->BM->devuelveLibros();
+	$this->load->view('v_librosprestados', $data); 
+	//footer
 	$this->load->view('footer');
+	}
+	
+	public function loadPrestamosLibro(){
 
+	//Modelos
+	$this->load->model('biblio_model','BM',true);
+	//cabecera
+	$datos = $this->BM->getCategorias();
+	$data['datos']=$datos;
+	$this->load->view('cabecera',$data); 
+	//Lista + btn
+	$data['librosTitulo'] = $this->BM->devuelveLibros();
+	$this->load->view('v_librosprestados', $data); 
+	//VALIDACION FORMULARIO
+	$p = $this->input->post();
+	$prestamos = [];
+	if ($p) {
+		$nomLib = $p['libros'];	//Pillamos lo seleccionado en el select.
+		$prestamo = $this->BM->sacarPrestamosNomLibro($nomLib);
+		$data['prestamo'] = $prestamo; 
+		$this->load->view('v_linksprestamos', $data); 
+	}
+	//footer
+	$this->load->view('footer');
+	}
+
+	public function guardarLibrosADevolver($idprestamo){ 
+		$this->load->library("session"); 
+		if (!$this->session->has_userdata("elimLib")) {
+			$arrLibrosAEliminar = [];
+			array_push($arrLibrosAEliminar, $idprestamo);
+			$this->session->set_userdata("elimLib", $arrLibrosAEliminar);
+		}else {
+			$arrLibrosAEliminar =$this->session->elimLib;
+			array_push($arrLibrosAEliminar, $idprestamo);
+			//PROCEDO A ELIMINAR TODOS LOS REPETIDOS DEL ARRAY.
+			$filtro = array_unique($arrLibrosAEliminar);
+			//Despues de eliminar todos los valores repetidos lo añado al array session
+			$this->session->set_userdata("elimLib", $filtro);
+		}
+		$url = base_url()."index.php/CHome/loadPrestamosLibro";
+		header('Location: '.$url);
+	}
+	
+	public function borrarLibrosSesion(){
+		//Modelos
+		$this->load->model('biblio_model','BM',true);
+
+		$arrLibrosAEliminar =$this->session->elimLib;
+		$cont = 0;
+		//Voy eliminandolos de la bbdd.
+		if ($arrLibrosAEliminar != null) {
+			foreach($arrLibrosAEliminar as $idprestamo) {
+				$this->BM->eliminarPrestamo($idprestamo);
+				$cont++;
+			}
+		}
+		//Borro el array session
+		$this->session->unset_userdata('elimLib'); 
+		$this->session->set_userdata("contLibBorrados", $cont); 
+		$url = base_url()."index.php/CHome/loadPrestamosLibro";  
+		header('Location: '.$url);
 	}
 
 }

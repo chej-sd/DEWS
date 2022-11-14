@@ -51,7 +51,21 @@ class biblio_model extends CI_Model {
         return $result->result_array();
     }
     
+    public function devuelveLibros() {
+        $result = $this->db->query("SELECT TITULO FROM LIBROS");
+        $libros = $result->result_array();
+        return $libros;
 
+    }
+    public function sacarPrestamosNomLibro($nomLibro) {
+        $result = $this->db->query("SELECT PRESTAMOS.IDPRESTAMO, PRESTAMOS.FECHA, LIBROS.TITULO FROM PRESTAMOS, LIBROS WHERE LIBROS.TITULO = '$nomLibro' AND LIBROS.IDLIBRO = PRESTAMOS.IDLIBRO");
+        $libros = $result->result_array();
+        return $libros;
+
+    }
     
+    public function eliminarPrestamo($idPrestamo) { 
+        $this->db->query("DELETE FROM PRESTAMOS WHERE IDPRESTAMO = $idPrestamo"); 
+    }
 }
 ?>

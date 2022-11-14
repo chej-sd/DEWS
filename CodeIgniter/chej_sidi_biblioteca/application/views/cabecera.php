@@ -10,12 +10,13 @@ $hoja_estilos = base_url()."./estilos/style.css";
 </head>
 <body>
 	<div id="header">
-		<h1>PRESTAMOS</h1>
-		<div class="calendario">
+		<h1>PRESTAMOS</h1> 
+		<div class="menu">
 			<p>
 				<a href="<?=base_url()?>index.php/CHome/generarCalendario/">CALENDARIO</a>
+				<a href="<?=base_url()?>index.php/CHome/generarPrestamos/">PRESTAMOS</a>
 			</p>
-		</div>
+		</div> 
 	</div> 
 	<div id="container">
         <div id="bar">

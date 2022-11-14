@@ -20,4 +20,5 @@
         echo "<td colspan='3'><input type='submit' value='PRESTAR LIBROS'></td>";
     echo "</tr>";
     echo "</table>";
+    echo "</form>";
 ?>
