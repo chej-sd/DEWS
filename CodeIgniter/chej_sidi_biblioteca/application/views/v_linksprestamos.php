@@ -12,9 +12,5 @@
         if ($librosAEliminar != null) {
             print_r($librosAEliminar);
         }
-        echo "<br><a href='".base_url()."index.php/CHome/borrarLibrosSesion/'>GRABAR DEVOLUCIONES</a>";
-        $librosBorrados = $this->session->userdata("contLibBorrados");
-        if ($librosBorrados != null || $librosBorrados != 0) {
-            echo "<br>Se han realizado $librosBorrados devoluciones";
-        }
+        echo "<br><a href='".base_url()."index.php/CHome/borrarLibrosSesion/'>GRABAR DEVOLUCIONES</a>"; 
 ?>

@@ -112,30 +112,33 @@ class CHome extends CI_Controller {
 	$data['datos']=$datos;
 	$this->load->view('cabecera',$data);
 	//Lista + btn
-	$data['librosTitulo'] = $this->BM->devuelveLibros();
+	$data['librosTitulo'] = $this->BM->devuelveLibros(); 
 	$this->load->view('v_librosprestados', $data); 
 	//footer
 	$this->load->view('footer');
-	}
-	
+	}  
 	public function loadPrestamosLibro(){
-
 	//Modelos
 	$this->load->model('biblio_model','BM',true);
 	//cabecera
 	$datos = $this->BM->getCategorias();
 	$data['datos']=$datos;
-	$this->load->view('cabecera',$data); 
-	//Lista + btn
-	$data['librosTitulo'] = $this->BM->devuelveLibros();
-	$this->load->view('v_librosprestados', $data); 
+	$this->load->view('cabecera',$data);  
 	//VALIDACION FORMULARIO
-	$p = $this->input->post();
+	$form = $this->input->post();
 	$prestamos = [];
-	if ($p) {
-		$nomLib = $p['libros'];	//Pillamos lo seleccionado en el select.
+	if ($form) { 
+		$nomLib = $form['libros'];	//Pillamos lo seleccionado en el select.
+		$this->session->set_userdata("nombreLibro", $nomLib);
+		
 		$prestamo = $this->BM->sacarPrestamosNomLibro($nomLib);
-		$data['prestamo'] = $prestamo; 
+		$data['prestamo'] = $prestamo;  
+		// 
+		//Lista + btn
+		$data['librosTitulo'] = $this->BM->devuelveLibros();
+		$data['seleccionado'] = $nomLib;
+		$this->load->view('v_librosprestados', $data); 
+
 		$this->load->view('v_linksprestamos', $data); 
 	}
 	//footer
@@ -156,14 +159,33 @@ class CHome extends CI_Controller {
 			//Despues de eliminar todos los valores repetidos lo añado al array session
 			$this->session->set_userdata("elimLib", $filtro);
 		}
-		$url = base_url()."index.php/CHome/loadPrestamosLibro";
-		header('Location: '.$url);
-	}
-	
+		//Modelos
+		$this->load->model('biblio_model','BM',true);
+		//cabecera
+		$datos = $this->BM->getCategorias();
+		$data['datos']=$datos;
+		$this->load->view('cabecera',$data);  
+		//Sacamos el nombre de sesion.
+		$nombreLibro = $this->session->userdata('nombreLibro');
+		//Lista + btn submit
+		$data['librosTitulo'] = $this->BM->devuelveLibros();
+		$data['seleccionado'] = $nombreLibro;
+		$this->load->view('v_librosprestados', $data);
+		//Lista + btn devolver
+		$prestamo = $this->BM->sacarPrestamosNomLibro($nombreLibro);
+		$data['prestamo'] = $prestamo;  
+		$this->load->view('v_linksprestamos',$data);
+		//footer
+		$this->load->view('footer');
+	} 
+
 	public function borrarLibrosSesion(){
 		//Modelos
 		$this->load->model('biblio_model','BM',true);
-
+		//cabecera
+		$datos = $this->BM->getCategorias();
+		$data['datos']=$datos;
+		$this->load->view('cabecera',$data);  
 		$arrLibrosAEliminar =$this->session->elimLib;
 		$cont = 0;
 		//Voy eliminandolos de la bbdd.
@@ -174,10 +196,14 @@ class CHome extends CI_Controller {
 			}
 		}
 		//Borro el array session
-		$this->session->unset_userdata('elimLib'); 
-		$this->session->set_userdata("contLibBorrados", $cont); 
-		$url = base_url()."index.php/CHome/loadPrestamosLibro";  
-		header('Location: '.$url);
+		$this->session->unset_userdata('elimLib');    
+		//Lista + btn submit + el numero de eliminacion
+		$data['librosTitulo'] = $this->BM->devuelveLibros();
+		$data['seleccionado'] = $nombreLibro;
+		$data['cont'] = $cont;
+		$this->load->view('v_librosprestados', $data);
+		//footer
+		$this->load->view('footer');  
 	}
 
 }
