@@ -103,7 +103,6 @@ class CHome extends CI_Controller {
 	//footer
 	$this->load->view('footer'); 
 	}
-	// ERRORES: HAY QUE DARLE AL BOTON DE "VER PRESTAMOS" CUANDO ESTAS EN LOADPRESMOSLIBRO PARA VER LOS PRESTAMOS Y QUE EN EL SELECT NO APARECE EL LIBRO ELEGIDO SIEMPRE APARECE EL MISMO LIBRO Y CUANDO GRABAS LAS DEVULUCIONES SIEMPRE SE QUEDAN POR LO DEMAS TODO OKEY.
 	public function generarPrestamos(){
 	//Modelos
 	$this->load->model('biblio_model','BM',true);
