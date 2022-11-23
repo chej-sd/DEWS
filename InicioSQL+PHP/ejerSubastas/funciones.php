@@ -21,7 +21,7 @@ function obtenerDiasMeses() {
     );
     return $diasMeses;
 }
-function pos1h($id){        ///ME SALE MAL, HAY QUE MIRAR PK
+function pos1h($id){   
     GLOBAL $con; 
     $fecha = new DateTime(obtenerFechaFin($id));
     $fecha = $fecha -> modify("+1 hours");
@@ -34,7 +34,7 @@ function pos1h($id){        ///ME SALE MAL, HAY QUE MIRAR PK
         return true;
     }
 }
-function pos1d($id){        //ESTA IGUAL SALE MAL HAY QUE VER XK
+function pos1d($id){      
     GLOBAL $con; 
     $fecha = new DateTime(obtenerFechaFin($id));
     $fecha -> modify("+1 day");
@@ -73,7 +73,7 @@ function subirPrecio($id, $valor){
 }
 function obtenerCategorias() {
     GLOBAL $con; 
-    $consultaCat = "SELECT CATEGORIA FROM CATEGORIAS";
+    $consultaCat = "SELECT CATEGORIA FROM TEMAS";
     $resultCat = mysqli_query($con, $consultaCat);
     $arrCat = [];
     foreach($resultCat as $fila){ 

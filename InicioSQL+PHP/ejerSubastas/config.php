@@ -4,6 +4,6 @@
     const DB_PASS="";
     const DB_DATABASE="ej_subastas";
     const foroname = "SUBASTAS CHEJ";
-    //RUTA BASE DE LA APLICACIÓN
+    const RUTA_APLICACION = "index.php";
     const moneda = "€";
 ?>
